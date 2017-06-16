@@ -13,7 +13,9 @@ class Cmusphinx(SpeechRecognition):
         :param kwargs:
         """
         # give the audio file path to process directly to the mother class if exist
-        SpeechRecognition.__init__(self, kwargs.get('audio_file_path', None))
+        SpeechRecognition.__init__(self, kwargs.get('audio_file_path', None),
+                                   kwargs.get('timeout', None),
+                                   kwargs.get('phrase_limit', None))
 
         # callback function to call after the translation speech/tex
         self.main_controller_callback = callback
@@ -43,9 +45,6 @@ class Cmusphinx(SpeechRecognition):
             Utils.print_danger("Could not request results from Sphinx Speech Recognition service; {0}".format(e))
             # callback anyway, we need to listen again for a new order
             self._analyse_audio(audio_to_text=None)
-
-        # stop listening for an audio
-        self.stop_listening()
 
     def _analyse_audio(self, audio_to_text):
         """

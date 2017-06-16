@@ -116,6 +116,9 @@ setup(
             'trigger/snowboy/x86_64/python35/_snowboydetect.so',
             'trigger/snowboy/x86_64/python36/_snowboydetect.so',
             'trigger/snowboy/x86_64-apple/python27/_snowboydetect.so',
+            'trigger/snowboy/x86_64-apple/python34/_snowboydetect.so',
+            'trigger/snowboy/x86_64-apple/python35/_snowboydetect.so',
+            'trigger/snowboy/x86_64-apple/python36/_snowboydetect.so',
             'trigger/snowboy/resources/*',
             'sounds/*'
          ],

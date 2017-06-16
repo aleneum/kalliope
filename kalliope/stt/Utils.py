@@ -13,17 +13,18 @@ logger = logging.getLogger("kalliope")
 
 class SpeechRecognition(Thread):
 
-    def __init__(self, audio_file=None):
+    def __init__(self, audio_file=None, timeout=None, phrase_limit=None):
         """
         Thread used to caught n audio from the microphone and pass it to a callback method
         """
         super(SpeechRecognition, self).__init__()
         self.recognizer = sr.Recognizer()
-        self.microphone = sr.Microphone()
         self.callback = None
         self.stop_thread = None
         self.kill_yourself = False
         self.audio_stream = None
+        self.timeout = timeout
+        self.phrase_limit = phrase_limit
 
         # get global configuration
         sl = SettingLoader()
@@ -31,7 +32,7 @@ class SpeechRecognition(Thread):
 
         if audio_file is None:
             # audio file not set, we need to capture a sample from the microphone
-            with self.microphone as source:
+            with sr.Microphone() as source:
                 # we only need to calibrate once, before we start listening
                 self.recognizer.adjust_for_ambient_noise(source)
         else:
@@ -49,11 +50,10 @@ class SpeechRecognition(Thread):
             if self.settings.rpi_settings:
                 if self.settings.rpi_settings.pin_led_listening:
                     RpiUtils.switch_pin_to_on(self.settings.rpi_settings.pin_led_listening)
-            self.stop_thread = self.recognizer.listen_in_background(self.microphone, self.callback)
-            while not self.kill_yourself:
-                sleep(0.1)
-            logger.debug("kill the speech recognition process")
-            self.stop_thread()
+
+            with sr.Microphone() as source:
+                audio = self.recognizer.listen(source, timeout=self.timeout, phrase_time_limit=self.phrase_limit)
+            self.callback(self.recognizer, audio)
         else:
             self.callback(self.recognizer, self.audio_stream)
 
