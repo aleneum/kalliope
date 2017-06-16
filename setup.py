@@ -32,6 +32,45 @@ py2_prefix = ''
 if sys.version_info[0] < 3:
     py2_prefix = 'python2-'
 
+
+required_packages = [
+        'pyyaml>=3.12',
+        'six==1.10.0',
+        'SpeechRecognition>=3.6.0',
+        'markupsafe>=1.0',
+        'pyaudio>=0.2.10',
+        'pyasn1>=0.2.3',
+        'ansible>=2.3',
+         py2_prefix + 'pythondialog>=3.4.0',
+        'jinja2>=2.8,<=2.9.6',
+        'cffi>=1.9.1',
+        'ipaddress>=1.0.17',
+        'flask>=0.12',
+        'Flask-Restful>=0.3.5',
+        'flask_cors==3.0.2',
+        'requests>=2.13',
+        'httpretty>=0.8.14',
+        'mock>=2.0.0',
+        'Flask-Testing>=0.6.2',
+        'apscheduler>=3.3.1',
+        'GitPython>=2.1.3',
+        'packaging>=16.8',
+        'transitions>=0.4.3',
+        'sounddevice>=0.3.7',
+        'SoundFile>=0.9.0',
+    ]
+
+
+required_packages_linux = [
+    'pyalsaaudio>=0.8.4',
+    'RPi.GPIO>=0.6.3',
+]
+
+# skip linux dependencies if operating system is osx (darwin)
+if sys.platform != "darwin":
+    required_packages.extend(required_packages_linux)
+
+
 setup(
     name='kalliope',
     version=version,
@@ -64,35 +103,7 @@ setup(
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),
 
     # required libs
-    install_requires=[
-        'pyyaml>=3.12',
-        'six==1.10.0',
-        'SpeechRecognition>=3.6.0',
-        'markupsafe>=1.0',
-        'pyaudio>=0.2.10',
-        'pyasn1>=0.2.3',
-        'ansible>=2.3',
-        py2_prefix + 'pythondialog>=3.4.0',
-        'jinja2>=2.8,<=2.9.6',
-        'cffi>=1.9.1',
-        'ipaddress>=1.0.17',
-        'flask>=0.12',
-        'Flask-Restful>=0.3.5',
-        'flask_cors==3.0.2',
-        'requests>=2.13',
-        'httpretty>=0.8.14',
-        'mock>=2.0.0',
-        'Flask-Testing>=0.6.2',
-        'apscheduler>=3.3.1',
-        'GitPython>=2.1.3',
-        'packaging>=16.8',
-        'transitions>=0.4.3',
-        'sounddevice>=0.3.7',
-        'SoundFile>=0.9.0',
-        'pyalsaaudio>=0.8.4',
-        'RPi.GPIO>=0.6.3'
-    ],
-
+    install_requires=required_packages,
 
     # additional files
     package_data={
@@ -104,6 +115,7 @@ setup(
             'trigger/snowboy/x86_64/python34/_snowboydetect.so',
             'trigger/snowboy/x86_64/python35/_snowboydetect.so',
             'trigger/snowboy/x86_64/python36/_snowboydetect.so',
+            'trigger/snowboy/x86_64-apple/python27/_snowboydetect.so',
             'trigger/snowboy/resources/*',
             'sounds/*'
          ],

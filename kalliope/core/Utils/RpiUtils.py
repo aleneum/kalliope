@@ -3,7 +3,7 @@ from threading import Thread
 try:
     # only import if we are on a Rpi
     import RPi.GPIO as GPIO
-except RuntimeError:
+except (RuntimeError, ImportError):
     pass
 import time
 

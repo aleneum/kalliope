@@ -105,5 +105,5 @@ class Snowboy(Thread):
         except KeyError:
             try:
                 stdio.__stderrp = devnull
-            except KeyError:
+            except (KeyError, AttributeError):
                 stdio.fclose(devnull)

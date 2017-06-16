@@ -4,12 +4,12 @@
 # Do not make changes to this file unless you know what you are doing--modify
 # the SWIG interface file instead.
 from kalliope.core.ConfigurationManager import SettingLoader
-from sys import version_info
+from sys import version_info, platform
 
 sl = SettingLoader()
 settings = sl.settings
-module_file_path = "%s/python%d%d/_snowboydetect" % (settings.machine, version_info[0], version_info[1])
-
+machine = "{0}-apple".format(settings.machine) if platform == "darwin" else settings.machine
+module_file_path = "/%s/python%d%d/" % (machine, version_info[0], version_info[1])
 
 if version_info >= (2, 6, 0):
     def swig_import_helper():
@@ -17,7 +17,7 @@ if version_info >= (2, 6, 0):
         import imp
         fp = None
         try:
-            fp, pathname, description = imp.find_module(module_file_path, [dirname(__file__)])
+            fp, pathname, description = imp.find_module('_snowboydetect', [dirname(__file__) + module_file_path])
         except ImportError:
             import _snowboydetect
             return _snowboydetect
