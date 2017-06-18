@@ -32,7 +32,7 @@ py2_prefix = ''
 if sys.version_info[0] < 3:
     py2_prefix = 'python2-'
 
-
+# universal dependencies
 required_packages = [
         'pyyaml>=3.12',
         'six==1.10.0',
@@ -60,7 +60,7 @@ required_packages = [
         'SoundFile>=0.9.0',
     ]
 
-
+# packages required for linux which are not available for osx
 required_packages_linux = [
     'pyalsaaudio>=0.8.4',
     'RPi.GPIO>=0.6.3',
