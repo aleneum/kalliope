@@ -30,7 +30,8 @@ class Neurotransmitter(NeuronModule):
                         self.is_waiting_for_answer = True
                 else:
                     # the user is using a from_answer_link, we call the stt to get an audio
-                    self.get_audio_from_stt(callback=self.callback)
+                    sug = [answer for el in self.from_answer_link for answer in el["answers"]]
+                    self.get_audio_from_stt(callback=self.callback, suggestions=sug)
 
     def callback(self, audio):
         """

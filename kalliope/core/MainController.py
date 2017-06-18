@@ -20,6 +20,9 @@ from kalliope.core.PlayerLauncher import PlayerLauncher
 # Neurons
 from kalliope.neurons.say.say import Say
 
+# Models
+from kalliope.core.Models import Order
+
 logging.basicConfig()
 logger = logging.getLogger("kalliope")
 
@@ -181,7 +184,8 @@ class MainController:
         logger.debug("[MainController] Entering state: %s" % self.state)
         # start listening for an order
         self.order_listener_callback_called = False
-        self.order_listener = OrderListener(callback=self.order_listener_callback)
+        self.order_listener = OrderListener(callback=self.order_listener_callback,
+                                            suggestions=get_orders(self.brain))
         self.order_listener.daemon = True
         self.order_listener.start()
         self.next_state()
@@ -260,3 +264,9 @@ class MainController:
         else:
             self.trigger_instance.unpause()
             Utils.print_info("Kalliope now listening for trigger detection")
+
+
+def get_orders(brain):
+    orders = [signal.sentence for synapse in brain.synapses for signal in synapse.signals if type(signal) == Order \
+              and not signal.sentence.startswith("synapse")]
+    return orders

@@ -21,6 +21,10 @@ class Cmusphinx(SpeechRecognition):
         self.main_controller_callback = callback
         self.language = kwargs.get('language', "en-US")
         self.keyword_entries = kwargs.get('keyword_entries', None)
+        if isinstance(self.keyword_entries, bool) and self.keyword_entries:
+            self.keyword_entries = []
+            for phrase in kwargs.get('hints', []):
+                self.keyword_entries.append((phrase, 0.6))
 
         # start listening in the background
         self.set_callback(self.sphinx_callback)

@@ -244,13 +244,13 @@ class NeuronModule(object):
             return content_file.read()
 
     @staticmethod
-    def get_audio_from_stt(callback):
+    def get_audio_from_stt(callback, suggestions):
         """
         Call the default STT to get an audio sample and return it into the callback method
         :param callback: A callback function
         """
         # call the order listener
-        ol = OrderListener(callback=callback)
+        ol = OrderListener(callback=callback, suggestions=suggestions)
         ol.start()
         ol.join()
         # wait that the STT engine has finish his job (or the neurotransmitter neuron will be killed)
